@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	
+	xsi:schemaLocation="http://www.springframework.org/schema/batch
+		http://www.springframework.org/schema/batch/spring-batch-2.2.xsd
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		http://www.springframework.org/schema/util
+		http://www.springframework.org/schema/util/spring-util-2.5.xsd
+		"
+	>
+	
+	<import resource="context.xml" />
+	<import resource="database.xml" />
+	
+	<batch:job id="job1" >
+		<batch:step id="step1">
+			<batch:tasklet>
+				<batch:chunk reader="itemReader" writer="itemWriter" 
+				commit-interval="1"/>
+			</batch:tasklet>
+		</batch:step>
+	</batch:job>
+	
+	<bean id="itemReader" class="org.springframework.batch.item.database.JdbcCursorItemReader" 
+	scope="step">
+		<property name="dataSource" ref="dataSource" />
+		<property name="sql" value="select ID,CODDEBARE,NUME,AUTOR,PRET,EDITURA from CARTE where AUTOR='#{jobParameters['autor']}'" />
+		<property name="rowMapper">
+			<bean class="Service.CarteRowMapper" />
+		</property>
+	</bean>
+	
+	<bean name="itemWriter" class="org.springframework.batch.item.xml.StaxEventItemWriter">
+		<property name="resource" value="file:output/carti.xml" />
+		<property name="marshaller" ref="xmlMarshaller" />
+		<property name="rootTagName" value="carti" />
+	</bean>
+	
+	<bean id="xmlMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller">
+	<property name="aliases">
+		<util:map id="aliases">
+			<entry key="carte" value="Model.Carte" />
+		</util:map>
+		</property> 
+ 	 </bean>
+	
+	</beans>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+ 
+ <hibernate-mapping>
+ 	<class name="Model.Comanda" table="comanda" >
+ 		<meta attribute="class-description" >
+ 			Comanda class.
+ 		</meta>
+ 		<id name="id" column="id" type="int" >
+ 			<generator class="native" />
+ 		</id>
+ 		<property name="data" column="data" type="string" />
+ 		<many-to-one name="utilizator" column="utilizator_id" class="Model.Utilizator"
+ 			unique="true"/>
+ 		<set name="carti" cascade="save-update" table="comanda_has_carte" fetch="join">
+ 			<key column="comanda_id" />
+ 			<many-to-many column="carte_id" class="Model.Carte"  />
+ 		</set>
+ 	</class>
+ </hibernate-mapping>

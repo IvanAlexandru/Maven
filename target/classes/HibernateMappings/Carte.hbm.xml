@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+ 
+ <hibernate-mapping>
+ 	<class name="Model.Carte" table="carte">
+ 		<meta attribute="class-description">
+ 			This class represents a book object.
+ 		</meta>
+ 		<id name="id" column="id" type="int">
+ 			<generator class="native"/>
+ 		</id>
+ 		<property name="codDeBare" column="codDeBare" type="string"/>
+ 		<property name="nume" column="nume" type="string"/>
+ 		<property name="autor" column="autor" type="string"/>
+ 		<property name="pret" column="pret" type="double"/>
+ 		<property name="dataDeLansare" column="dataDeLansare" type="string"/>
+ 		<property name="editura" column="editura" type="string"/>
+ 		<property name="stoc" column="stoc" type="int"/>
+ 	</class>
+ </hibernate-mapping>
